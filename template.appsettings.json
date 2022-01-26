@@ -1,0 +1,17 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "Database": "Server=localhost,1434;Database=project_blu_db;User=sa;Password=ProjectBlu_Database1!;"
+  },
+  "Jwt": {
+    "Key": "XPASDb2cgaG91c2UgcG9ydGFsIHZlcnNpb24gMiEhIElmIHlvdSdyZSByZWFkaW5nIHRoaXMsIFNPC42",
+    "Issuer": "project-blu",
+    "Audience": "project-blu"
+  }
+}

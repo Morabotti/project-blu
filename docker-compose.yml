@@ -1,0 +1,10 @@
+﻿version: '3.4'
+
+services:
+    database:
+        image: "mcr.microsoft.com/mssql/server"
+        ports:
+            - "1434:1433"
+        environment:
+            SA_PASSWORD: "ProjectBlu_Database1!"
+            ACCEPT_EULA: "Y"
