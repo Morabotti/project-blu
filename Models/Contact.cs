@@ -2,13 +2,7 @@
 
 namespace ProjectBlu.Models;
 
-public enum UserRole
-{
-    User = 0,
-    Admin = 1
-}
-
-public class User
+public class Contact
 {
     public long Id { get; set; }
 
@@ -22,18 +16,18 @@ public class User
 
     public Location Location { get; set; } = new Location();
 
-    [Required]
+    [MaxLength(60)]
+    public string? Title { get; set; }
+
+    [MaxLength(15)]
+    public string? Phone { get; set; }
+
     [EmailAddress]
     [MaxLength(60)]
-    public string Email { get; set; }
-
-    [MaxLength(120)]
-    public string? Password { get; set; }
-
-    [DefaultValue(UserRole.User)]
-    public UserRole Role { get; set; }
+    public string? Email { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
-    public ICollection<Deal> ResponsibleDeals { get; set; }
+    public long CustomerId { get; set; }
+    public Customer Customer { get; set; }
 }

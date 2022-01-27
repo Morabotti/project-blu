@@ -21,6 +21,9 @@ public class Project
 
     public DateTime UpdatedAt { get; set; }
 
-    public List<Issue> Issues { get; set; }
-    public List<Document> Documents { get; set; }
+    public long? CustomerId { get; set; }
+    public Customer Customer { get; set; }
+
+    public ICollection<Issue> Issues { get; set; }
+    public ICollection<Document> Documents { get; set; }
 }
