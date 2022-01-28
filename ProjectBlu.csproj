@@ -29,6 +29,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.3" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,7 +42,6 @@
 	<ItemGroup>
 	  <Folder Include="Migrations\" />
 	  <Folder Include="ClientApp\" />
-	  <Folder Include="Utils\" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

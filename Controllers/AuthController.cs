@@ -1,5 +1,4 @@
-﻿using ProjectBlu.Dto.Authentication;
-using ProjectBlu.Services.Interfaces;
+﻿using ProjectBlu.Services.Interfaces;
 
 namespace ProjectBlu.Controllers;
 

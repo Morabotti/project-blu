@@ -1,5 +1,4 @@
-﻿using ProjectBlu.Dto.Authentication;
-using ProjectBlu.Repositories;
+﻿using ProjectBlu.Repositories;
 using ProjectBlu.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using ProjectBlu.Settings;
@@ -27,7 +26,7 @@ public class AuthService : IAuthService
         _jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
     }
 
-    public async Task<Response<UserResponse>> GetUserAsync(long id)
+    public async Task<Response<UserResponse>> GetUserAsync(int id)
     {
         var user = await _context.Users
             .Where(u => !u.DeletedAt.HasValue)

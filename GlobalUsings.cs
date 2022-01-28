@@ -6,3 +6,6 @@ global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using ProjectBlu.Dto;
+global using ProjectBlu.Dto.Requests;
+global using ProjectBlu.Dto.Responses;
+global using ProjectBlu.Dto.Queries;

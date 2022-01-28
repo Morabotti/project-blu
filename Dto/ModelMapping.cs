@@ -1,5 +1,4 @@
-﻿using ProjectBlu.Dto.Authentication;
-using ProjectBlu.Models;
+﻿using ProjectBlu.Models;
 
 namespace ProjectBlu.Dto;
 
@@ -7,6 +6,11 @@ public class ModelMapping : Profile
 {
     public ModelMapping()
     {
-        CreateMap<User, UserResponse>();
+        CreateMap<CreateNewsRequest, News>();
+
+        CreateMap<User, UserResponse>().ReverseMap();
+        CreateMap<User, AuthorResponse>().ReverseMap();
+        CreateMap<AuthorResponse, UserResponse>().ReverseMap();
+        CreateMap<News, NewsResponse>().ReverseMap();
     }
 }

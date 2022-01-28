@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace ProjectBlu.Dto;
+﻿namespace ProjectBlu.Dto;
 
 public class Response<T>
 {

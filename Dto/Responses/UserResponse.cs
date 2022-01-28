@@ -1,6 +1,6 @@
 ﻿using ProjectBlu.Models;
 
-namespace ProjectBlu.Dto.Authentication;
+namespace ProjectBlu.Dto.Responses;
 
 public class UserResponse
 {

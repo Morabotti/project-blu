@@ -1,4 +1,4 @@
-﻿namespace ProjectBlu.Dto.Authentication;
+﻿namespace ProjectBlu.Dto.Requests;
 
 public class LoginRequest
 {

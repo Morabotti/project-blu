@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ProjectBlu.Dto.Authentication;
-using ProjectBlu.Models;
+﻿using ProjectBlu.Models;
 
 namespace ProjectBlu.Controllers;
 
@@ -29,7 +27,7 @@ public class ApiController : ControllerBase
             FirstName = GetClaimValue("firstName"),
             LastName = GetClaimValue("lastName"),
             Email = GetClaimValue("email"),
-            Role = (UserRole)Enum.Parse(typeof(UserRole), GetClaimValue("role")),
+            Role = GetClaimValue("role") == "Admin" ? UserRole.Admin : UserRole.User,
             CreatedAt = DateTime.Parse(GetClaimValue("createdAt"))
         };
     }
