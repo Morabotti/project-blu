@@ -12,7 +12,8 @@ public class Contact
     [Required, MaxLength(30)]
     public string LastName { get; set; }
 
-    public Location Location { get; set; } = new Location();
+    private Location _location;
+    public Location Location { get => _location ??= new Location(); set => _location = value; }
 
     [MaxLength(60)]
     public string? Title { get; set; }

@@ -14,6 +14,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="11.0.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
@@ -36,7 +39,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Migrations\" />
-	  <Folder Include="Dto\" />
 	  <Folder Include="ClientApp\" />
 	  <Folder Include="Utils\" />
 	</ItemGroup>

@@ -19,11 +19,11 @@ public class TimeEntry
 
     public DateTime UpdatedAt { get; set; }
 
+    public int? IssueId { get; set; }
+    public Issue Issue { get; set; }
+
     public int ProjectId { get; set; }
     public Project Project { get; set; }
-
-    public int IssueId { get; set; }
-    public Issue Issue { get; set; }
 
     public int UserId { get; set; }
     public User User { get; set; }

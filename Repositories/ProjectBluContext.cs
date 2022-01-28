@@ -21,6 +21,7 @@ public class ProjectBluContext : DbContext
     public DbSet<WikiCategory> WikiCategories { get; set; }
     public DbSet<WikiArticle> WikiArticles { get; set; }
     public DbSet<Attachment> Attachments { get; set; }
+    public DbSet<News> News { get; set; }
 
     public ProjectBluContext(DbContextOptions<ProjectBluContext> options) : base(options)
     {
@@ -40,10 +41,15 @@ public class ProjectBluContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Keys
         modelBuilder.Entity<Member>().HasKey(m => new { m.UserId, m.GroupId, m.ProjectId });
-        modelBuilder.Entity<Comment>().HasKey(c => new { c.CommentedId, c.Type });
-        modelBuilder.Entity<Attachment>().HasKey(a => new { a.AttachedId, a.Type });
 
+        // Indexes
+        modelBuilder.Entity<Comment>().HasIndex(c => new { c.CommentedId, c.Type });
+        modelBuilder.Entity<Attachment>().HasIndex(a => new { a.AttachedId, a.Type });
+        modelBuilder.Entity<User>().HasIndex(u => u.Email);
+
+        // Auto-generated fields
         modelBuilder.Entity<User>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Issue>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Project>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
@@ -56,7 +62,9 @@ public class ProjectBluContext : DbContext
         modelBuilder.Entity<Member>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<WikiArticle>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Attachment>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
+        modelBuilder.Entity<News>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
 
+        // Custom converters
         modelBuilder.Entity<Group>()
             .Property(p => p.Permissions)
             .HasConversion<StringListConverter, StringListComparer>();
@@ -68,5 +76,16 @@ public class ProjectBluContext : DbContext
         modelBuilder.Entity<WikiArticle>()
             .Property(p => p.Tags)
             .HasConversion<StringListConverter, StringListComparer>();
+
+        // Data seeding
+        modelBuilder.Entity<User>().HasData(new User
+        {
+            Id = -1,
+            FirstName = "Test",
+            LastName = "User",
+            Email = "test.user@projectblu.com",
+            Password = BCrypt.Net.BCrypt.HashPassword("TestTest1!", 13),
+            Role = UserRole.Admin
+        });
     }
 }

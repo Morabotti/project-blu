@@ -13,16 +13,17 @@ namespace ProjectBlu.Migrations
                 name: "Comments",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<int>(type: "int", nullable: false),
                     CommentedId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => new { x.CommentedId, x.Type });
+                    table.PrimaryKey("PK_Comments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,8 +111,10 @@ namespace ProjectBlu.Migrations
                     Location_Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),
+                    Provider = table.Column<int>(type: "int", nullable: true),
                     Role = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()")
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()"),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -192,9 +195,10 @@ namespace ProjectBlu.Migrations
                 name: "Attachments",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<int>(type: "int", nullable: false),
                     AttachedId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     Filename = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     DiskName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -207,7 +211,7 @@ namespace ProjectBlu.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Attachments", x => new { x.AttachedId, x.Type });
+                    table.PrimaryKey("PK_Attachments", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Attachments_Users_AuthorId",
                         column: x => x.AuthorId,
@@ -244,6 +248,29 @@ namespace ProjectBlu.Migrations
                         column: x => x.ResponsibleId,
                         principalTable: "Users",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "News",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Subject = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_News", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_News_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -396,8 +423,8 @@ namespace ProjectBlu.Migrations
                     Date = table.Column<DateTime>(type: "date", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IssueId = table.Column<int>(type: "int", nullable: true),
                     ProjectId = table.Column<int>(type: "int", nullable: false),
-                    IssueId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -407,8 +434,7 @@ namespace ProjectBlu.Migrations
                         name: "FK_TimeEntries_Issues_IssueId",
                         column: x => x.IssueId,
                         principalTable: "Issues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_TimeEntries_Projects_ProjectId",
                         column: x => x.ProjectId,
@@ -422,6 +448,11 @@ namespace ProjectBlu.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "DeletedAt", "Email", "FirstName", "LastName", "Password", "Provider", "Role" },
+                values: new object[] { -1, null, "test.user@projectblu.com", "Test", "User", "$2a$13$ionCgXRlgSTiwD/ibdwKreJRUe3PYEwYcS8obkaSIq/uvG9YNv9we", null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attachments_AttachedId_Type",
@@ -494,6 +525,11 @@ namespace ProjectBlu.Migrations
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_News_AuthorId",
+                table: "News",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Projects_CustomerId",
                 table: "Projects",
                 column: "CustomerId");
@@ -512,6 +548,11 @@ namespace ProjectBlu.Migrations
                 name: "IX_TimeEntries_UserId",
                 table: "TimeEntries",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WikiArticles_AuthorId",
@@ -543,6 +584,9 @@ namespace ProjectBlu.Migrations
 
             migrationBuilder.DropTable(
                 name: "Members");
+
+            migrationBuilder.DropTable(
+                name: "News");
 
             migrationBuilder.DropTable(
                 name: "TimeEntries");

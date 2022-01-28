@@ -24,10 +24,13 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.Attachment", b =>
                 {
-                    b.Property<int>("AttachedId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AttachedId")
                         .HasColumnType("int");
 
                     b.Property<int>("AuthorId")
@@ -63,13 +66,13 @@ namespace ProjectBlu.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
-                    b.HasKey("AttachedId", "Type");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
@@ -80,10 +83,13 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.Comment", b =>
                 {
-                    b.Property<int>("CommentedId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CommentedId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -94,13 +100,13 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getutcdate()");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CommentedId", "Type");
+                    b.HasKey("Id");
 
                     b.HasIndex("CommentedId", "Type");
 
@@ -434,6 +440,40 @@ namespace ProjectBlu.Migrations
                     b.ToTable("Members");
                 });
 
+            modelBuilder.Entity("ProjectBlu.Models.News", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getutcdate()");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("News");
+                });
+
             modelBuilder.Entity("ProjectBlu.Models.Project", b =>
                 {
                     b.Property<int>("Id")
@@ -500,7 +540,7 @@ namespace ProjectBlu.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<int>("IssueId")
+                    b.Property<int?>("IssueId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProjectId")
@@ -536,6 +576,9 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getutcdate()");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(60)
@@ -555,12 +598,29 @@ namespace ProjectBlu.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 
+                    b.Property<int?>("Provider")
+                        .HasColumnType("int");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email");
+
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "test.user@projectblu.com",
+                            FirstName = "Test",
+                            LastName = "User",
+                            Password = "$2a$13$ionCgXRlgSTiwD/ibdwKreJRUe3PYEwYcS8obkaSIq/uvG9YNv9we",
+                            Role = 1
+                        });
                 });
 
             modelBuilder.Entity("ProjectBlu.Models.WikiArticle", b =>
@@ -828,6 +888,17 @@ namespace ProjectBlu.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ProjectBlu.Models.News", b =>
+                {
+                    b.HasOne("ProjectBlu.Models.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("ProjectBlu.Models.Project", b =>
                 {
                     b.HasOne("ProjectBlu.Models.Customer", "Customer")
@@ -841,9 +912,7 @@ namespace ProjectBlu.Migrations
                 {
                     b.HasOne("ProjectBlu.Models.Issue", "Issue")
                         .WithMany("TimeEntries")
-                        .HasForeignKey("IssueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IssueId");
 
                     b.HasOne("ProjectBlu.Models.Project", "Project")
                         .WithMany("TimeEntries")

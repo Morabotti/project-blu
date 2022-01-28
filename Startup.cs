@@ -2,8 +2,11 @@
 using Microsoft.IdentityModel.Tokens;
 using ProjectBlu.Controllers.Filters;
 using ProjectBlu.Repositories;
+using ProjectBlu.Services;
+using ProjectBlu.Services.Interfaces;
 using ProjectBlu.Settings;
 using System.Text;
+using System.Text.Json;
 
 namespace ProjectBlu;
 
@@ -18,6 +21,10 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddTransient<IAuthService, AuthService>();
+
+        services.AddAutoMapper(typeof(Startup));
+
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -49,6 +56,10 @@ public class Startup
         .ConfigureApiBehaviorOptions(options =>
         {
             options.SuppressModelStateInvalidFilter = true;
+        })
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         });
 
         services.AddSpaStaticFiles(configuration =>
