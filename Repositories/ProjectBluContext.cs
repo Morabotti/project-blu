@@ -84,7 +84,7 @@ public class ProjectBluContext : DbContext
             FirstName = "Test",
             LastName = "User",
             Email = "test.user@projectblu.com",
-            Password = BCrypt.Net.BCrypt.HashPassword("TestTest1!", 13),
+            Password = BCrypt.Net.BCrypt.HashPassword("TestTest1!"),
             Role = UserRole.Admin
         });
     }

@@ -12,7 +12,7 @@ using ProjectBlu.Repositories;
 namespace ProjectBlu.Migrations
 {
     [DbContext(typeof(ProjectBluContext))]
-    [Migration("20220128184217_Initial")]
+    [Migration("20220128193102_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -620,7 +620,7 @@ namespace ProjectBlu.Migrations
                             Email = "test.user@projectblu.com",
                             FirstName = "Test",
                             LastName = "User",
-                            Password = "$2a$13$ionCgXRlgSTiwD/ibdwKreJRUe3PYEwYcS8obkaSIq/uvG9YNv9we",
+                            Password = "$2a$11$y0YXPtJf.d7GYgrP7v7FjO6vRmnJcTDTyRcA9LxDuL/YaAiZyNOIq",
                             Role = 1
                         });
                 });

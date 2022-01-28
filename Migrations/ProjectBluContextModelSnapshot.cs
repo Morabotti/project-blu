@@ -618,7 +618,7 @@ namespace ProjectBlu.Migrations
                             Email = "test.user@projectblu.com",
                             FirstName = "Test",
                             LastName = "User",
-                            Password = "$2a$13$ionCgXRlgSTiwD/ibdwKreJRUe3PYEwYcS8obkaSIq/uvG9YNv9we",
+                            Password = "$2a$11$y0YXPtJf.d7GYgrP7v7FjO6vRmnJcTDTyRcA9LxDuL/YaAiZyNOIq",
                             Role = 1
                         });
                 });
