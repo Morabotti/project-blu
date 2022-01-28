@@ -10,6 +10,23 @@ namespace ProjectBlu.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    CommentedId = table.Column<long>(type: "bigint", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Customers",
                 columns: table => new
                 {
@@ -29,6 +46,55 @@ namespace ProjectBlu.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IssueCategories",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    IsDefault = table.Column<bool>(type: "bit", nullable: false),
+                    Position = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IssueCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IssueStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    IsDefault = table.Column<bool>(type: "bit", nullable: false),
+                    IsClosed = table.Column<bool>(type: "bit", nullable: false),
+                    Position = table.Column<int>(type: "int", nullable: true),
+                    DoneRatio = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IssueStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeEntries",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Comment = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Hours = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    Date = table.Column<DateTime>(type: "date", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeEntries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,19 +235,46 @@ namespace ProjectBlu.Migrations
                     Subject = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DoneRatio = table.Column<int>(type: "int", nullable: false),
-                    EstimatedTime = table.Column<long>(type: "bigint", nullable: true),
+                    EstimatedTime = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: true),
+                    Priority = table.Column<int>(type: "int", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProjectId = table.Column<long>(type: "bigint", nullable: false)
+                    ProjectId = table.Column<long>(type: "bigint", nullable: false),
+                    StatusId = table.Column<long>(type: "bigint", nullable: false),
+                    CategoryId = table.Column<long>(type: "bigint", nullable: true),
+                    AuthorId = table.Column<long>(type: "bigint", nullable: false),
+                    AssignedId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Issues", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Issues_IssueCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "IssueCategories",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Issues_IssueStatuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "IssueStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Issues_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Issues_Users_AssignedId",
+                        column: x => x.AssignedId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Issues_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -207,9 +300,29 @@ namespace ProjectBlu.Migrations
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Issues_AssignedId",
+                table: "Issues",
+                column: "AssignedId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_AuthorId",
+                table: "Issues",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_CategoryId",
+                table: "Issues",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Issues_ProjectId",
                 table: "Issues",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_StatusId",
+                table: "Issues",
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_CustomerId",
@@ -219,6 +332,9 @@ namespace ProjectBlu.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Comments");
+
             migrationBuilder.DropTable(
                 name: "Contacts");
 
@@ -232,10 +348,19 @@ namespace ProjectBlu.Migrations
                 name: "Issues");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "TimeEntries");
+
+            migrationBuilder.DropTable(
+                name: "IssueCategories");
+
+            migrationBuilder.DropTable(
+                name: "IssueStatuses");
 
             migrationBuilder.DropTable(
                 name: "Projects");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Customers");

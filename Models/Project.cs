@@ -4,8 +4,7 @@ public class Project
 {
     public long Id { get; set; }
 
-    [Required]
-    [MaxLength(30)]
+    [Required, MaxLength(30)]
     public string Name { get; set; }
 
     public string? Description { get; set; }
@@ -13,8 +12,7 @@ public class Project
     [Required]
     public bool IsPublic { get; set; }
 
-    [Required]
-    [MaxLength(50)]
+    [Required, MaxLength(50)]
     public string Identifier { get; set; }
 
     public DateTime CreatedAt { get; set; }
