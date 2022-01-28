@@ -6,7 +6,8 @@ public enum CommentType
     User = 1,
     Customer = 2,
     Project = 3,
-    News = 4
+    News = 4,
+    Wiki = 5
 }
 
 [Index(nameof(CommentedId), nameof(Type))]

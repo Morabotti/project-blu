@@ -18,8 +18,7 @@ public class Issue
 
     public string? Description { get; set; }
 
-    [DefaultValue(0)]
-    public int DoneRatio { get; set; }
+    public int DoneRatio { get; set; } = 0;
 
     [Precision(precision: 10, scale: 2)]
     public decimal? EstimatedTime { get; set; }
