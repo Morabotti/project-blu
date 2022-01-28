@@ -11,7 +11,7 @@ public enum DealStatus
 
 public class Deal
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [Required, MaxLength(60)]
     public string Name { get; set; }
@@ -25,9 +25,9 @@ public class Deal
 
     public DateTime? DueDate { get; set; }
 
-    public long CustomerId { get; set; }
+    public int CustomerId { get; set; }
     public Customer Customer { get; set; }
 
-    public long? ResponsibleId { get; set; }
+    public int? ResponsibleId { get; set; }
     public User Responsible { get; set; }
 }

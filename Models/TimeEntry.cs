@@ -4,7 +4,7 @@ namespace ProjectBlu.Models;
 
 public class TimeEntry
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [MaxLength(255)]
     public string? Comment { get; set; }
@@ -18,4 +18,10 @@ public class TimeEntry
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
+
+    public int ProjectId { get; set; }
+    public Project Project { get; set; }
+
+    public int IssueId { get; set; }
+    public Issue Issue { get; set; }
 }

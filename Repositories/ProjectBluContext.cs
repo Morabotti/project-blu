@@ -16,6 +16,8 @@ public class ProjectBluContext : DbContext
     public DbSet<IssueStatus> IssueStatuses { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<TimeEntry> TimeEntries { get; set; }
+    public DbSet<Group> Groups { get; set; }
+    public DbSet<Member> Members { get; set; }
 
     public ProjectBluContext(DbContextOptions<ProjectBluContext> options) : base(options)
     {
@@ -35,6 +37,8 @@ public class ProjectBluContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Member>().HasKey(m => new { m.UserId, m.GroupId, m.ProjectId });
+
         modelBuilder.Entity<User>().Property(p => p.CreatedAt).HasDefaultValueSql("getdate()");
         modelBuilder.Entity<Issue>().Property(p => p.CreatedAt).HasDefaultValueSql("getdate()");
         modelBuilder.Entity<Project>().Property(p => p.CreatedAt).HasDefaultValueSql("getdate()");
@@ -44,5 +48,10 @@ public class ProjectBluContext : DbContext
         modelBuilder.Entity<Deal>().Property(p => p.CreatedAt).HasDefaultValueSql("getdate()");
         modelBuilder.Entity<Comment>().Property(p => p.CreatedAt).HasDefaultValueSql("getdate()");
         modelBuilder.Entity<TimeEntry>().Property(p => p.CreatedAt).HasDefaultValueSql("getdate()");
+        modelBuilder.Entity<Member>().Property(p => p.CreatedAt).HasDefaultValueSql("getdate()");
+
+        modelBuilder.Entity<Group>()
+            .Property(p => p.Permissions)
+            .HasConversion<StringListConverter, StringListComparer>();
     }
 }

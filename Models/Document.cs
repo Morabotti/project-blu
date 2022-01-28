@@ -2,7 +2,7 @@
 
 public class Document
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [Required, MaxLength(60)]
     public string Title { get; set; }
@@ -11,6 +11,6 @@ public class Document
 
     public DateTime CreatedAt { get; set; }
 
-    public long ProjectId { get; set; }
+    public int ProjectId { get; set; }
     public Project Project { get; set; }
 }

@@ -11,7 +11,7 @@ public enum IssuePriority
 
 public class Issue
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [Required, MaxLength(255)]
     public string Subject { get; set; }
@@ -32,18 +32,20 @@ public class Issue
 
     public DateTime UpdatedAt { get; set; }
 
-    public long ProjectId { get; set; }
+    public int ProjectId { get; set; }
     public Project Project { get; set; }
 
-    public long StatusId { get; set; }
+    public int StatusId { get; set; }
     public IssueStatus Status { get; set; }
 
-    public long? CategoryId { get; set; }
+    public int? CategoryId { get; set; }
     public IssueCategory Category { get; set; }
 
-    public long AuthorId { get; set; }
+    public int AuthorId { get; set; }
     public User Author { get; set; }
 
-    public long? AssignedId { get; set; }
+    public int? AssignedId { get; set; }
     public User Assigned { get; set; }
+
+    public ICollection<TimeEntry> TimeEntries { get; set; }
 }

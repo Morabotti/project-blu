@@ -4,7 +4,7 @@ namespace ProjectBlu.Models;
 
 public class Contact
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [Required, MaxLength(30)]
     public string FirstName { get; set; }
@@ -25,6 +25,6 @@ public class Contact
 
     public DateTime CreatedAt { get; set; }
 
-    public long CustomerId { get; set; }
+    public int CustomerId { get; set; }
     public Customer Customer { get; set; }
 }

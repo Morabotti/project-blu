@@ -2,7 +2,7 @@
 
 public class IssueCategory
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [Required, MaxLength(40)]
     public string Name { get; set; }

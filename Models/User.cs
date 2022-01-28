@@ -10,7 +10,7 @@ public enum UserRole
 
 public class User
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [Required, MaxLength(30)]
     public string FirstName { get; set; }
@@ -32,4 +32,5 @@ public class User
     public DateTime CreatedAt { get; set; }
 
     public ICollection<Deal> ResponsibleDeals { get; set; }
+    public ICollection<Member> Members { get; set; }
 }

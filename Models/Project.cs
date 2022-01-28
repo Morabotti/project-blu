@@ -2,7 +2,7 @@
 
 public class Project
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [Required, MaxLength(30)]
     public string Name { get; set; }
@@ -19,9 +19,11 @@ public class Project
 
     public DateTime UpdatedAt { get; set; }
 
-    public long? CustomerId { get; set; }
+    public int? CustomerId { get; set; }
     public Customer Customer { get; set; }
 
     public ICollection<Issue> Issues { get; set; }
     public ICollection<Document> Documents { get; set; }
+    public ICollection<TimeEntry> TimeEntries { get; set; }
+    public ICollection<Member> Members { get; set; }
 }

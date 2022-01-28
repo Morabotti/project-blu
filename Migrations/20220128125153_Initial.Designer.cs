@@ -12,7 +12,7 @@ using ProjectBlu.Repositories;
 namespace ProjectBlu.Migrations
 {
     [DbContext(typeof(ProjectBluContext))]
-    [Migration("20220128002744_Initial")]
+    [Migration("20220128125153_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,14 +26,14 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.Comment", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<long>("CommentedId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("CommentedId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
@@ -51,24 +51,26 @@ namespace ProjectBlu.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CommentedId", "Type");
+
                     b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("ProjectBlu.Models.Contact", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getdate()");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasMaxLength(60)
@@ -101,11 +103,11 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.Customer", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -135,19 +137,19 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.Deal", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getdate()");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -164,8 +166,8 @@ namespace ProjectBlu.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<long?>("ResponsibleId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("ResponsibleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -178,11 +180,11 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.Document", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -192,8 +194,8 @@ namespace ProjectBlu.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -207,22 +209,50 @@ namespace ProjectBlu.Migrations
                     b.ToTable("Documents");
                 });
 
+            modelBuilder.Entity("ProjectBlu.Models.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Assignable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("Permissions")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Position")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
+                });
+
             modelBuilder.Entity("ProjectBlu.Models.Issue", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<long?>("AssignedId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("AssignedId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("AuthorId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
 
-                    b.Property<long?>("CategoryId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -245,11 +275,11 @@ namespace ProjectBlu.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("StatusId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Subject")
                         .IsRequired()
@@ -276,11 +306,11 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.IssueCategory", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
@@ -300,11 +330,11 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.IssueStatus", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("DoneRatio")
                         .HasColumnType("int");
@@ -328,21 +358,46 @@ namespace ProjectBlu.Migrations
                     b.ToTable("IssueStatuses");
                 });
 
-            modelBuilder.Entity("ProjectBlu.Models.Project", b =>
+            modelBuilder.Entity("ProjectBlu.Models.Member", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getdate()");
 
-                    b.Property<long?>("CustomerId")
-                        .HasColumnType("bigint");
+                    b.HasKey("UserId", "GroupId", "ProjectId");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("ProjectBlu.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -372,11 +427,11 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.TimeEntry", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Comment")
                         .HasMaxLength(255)
@@ -394,21 +449,31 @@ namespace ProjectBlu.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<int>("IssueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("TimeEntries");
                 });
 
             modelBuilder.Entity("ProjectBlu.Models.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -452,8 +517,8 @@ namespace ProjectBlu.Migrations
 
                     b.OwnsOne("ProjectBlu.Models.Owned.Location", "Location", b1 =>
                         {
-                            b1.Property<long>("ContactId")
-                                .HasColumnType("bigint");
+                            b1.Property<int>("ContactId")
+                                .HasColumnType("int");
 
                             b1.Property<string>("Address")
                                 .HasMaxLength(30)
@@ -493,8 +558,8 @@ namespace ProjectBlu.Migrations
                 {
                     b.OwnsOne("ProjectBlu.Models.Owned.Location", "Location", b1 =>
                         {
-                            b1.Property<long>("CustomerId")
-                                .HasColumnType("bigint");
+                            b1.Property<int>("CustomerId")
+                                .HasColumnType("int");
 
                             b1.Property<string>("Address")
                                 .HasMaxLength(30)
@@ -595,6 +660,33 @@ namespace ProjectBlu.Migrations
                     b.Navigation("Status");
                 });
 
+            modelBuilder.Entity("ProjectBlu.Models.Member", b =>
+                {
+                    b.HasOne("ProjectBlu.Models.Group", "Group")
+                        .WithMany("Members")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectBlu.Models.Project", "Project")
+                        .WithMany("Members")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectBlu.Models.User", "User")
+                        .WithMany("Members")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ProjectBlu.Models.Project", b =>
                 {
                     b.HasOne("ProjectBlu.Models.Customer", "Customer")
@@ -604,12 +696,31 @@ namespace ProjectBlu.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("ProjectBlu.Models.TimeEntry", b =>
+                {
+                    b.HasOne("ProjectBlu.Models.Issue", "Issue")
+                        .WithMany("TimeEntries")
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectBlu.Models.Project", "Project")
+                        .WithMany("TimeEntries")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issue");
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("ProjectBlu.Models.User", b =>
                 {
                     b.OwnsOne("ProjectBlu.Models.Owned.Location", "Location", b1 =>
                         {
-                            b1.Property<long>("UserId")
-                                .HasColumnType("bigint");
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
 
                             b1.Property<string>("Address")
                                 .HasMaxLength(30)
@@ -652,15 +763,31 @@ namespace ProjectBlu.Migrations
                     b.Navigation("Projects");
                 });
 
+            modelBuilder.Entity("ProjectBlu.Models.Group", b =>
+                {
+                    b.Navigation("Members");
+                });
+
+            modelBuilder.Entity("ProjectBlu.Models.Issue", b =>
+                {
+                    b.Navigation("TimeEntries");
+                });
+
             modelBuilder.Entity("ProjectBlu.Models.Project", b =>
                 {
                     b.Navigation("Documents");
 
                     b.Navigation("Issues");
+
+                    b.Navigation("Members");
+
+                    b.Navigation("TimeEntries");
                 });
 
             modelBuilder.Entity("ProjectBlu.Models.User", b =>
                 {
+                    b.Navigation("Members");
+
                     b.Navigation("ResponsibleDeals");
                 });
 #pragma warning restore 612, 618

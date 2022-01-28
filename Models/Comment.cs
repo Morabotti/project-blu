@@ -9,15 +9,16 @@ public enum CommentType
     News = 4
 }
 
+[Index(nameof(CommentedId), nameof(Type))]
 public class Comment
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     [Required]
     public CommentType Type { get; set; }
 
     [Required]
-    public long CommentedId { get; set; }
+    public int CommentedId { get; set; }
 
     public string? Content { get; set; }
 
