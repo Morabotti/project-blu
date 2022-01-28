@@ -13,8 +13,7 @@ public class Deal
 {
     public long Id { get; set; }
 
-    [Required]
-    [MaxLength(60)]
+    [Required, MaxLength(60)]
     public string Name { get; set; }
 
     [Precision(precision: 10, scale: 2)]

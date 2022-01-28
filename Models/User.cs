@@ -12,19 +12,15 @@ public class User
 {
     public long Id { get; set; }
 
-    [Required]
-    [MaxLength(30)]
+    [Required, MaxLength(30)]
     public string FirstName { get; set; }
 
-    [Required]
-    [MaxLength(30)]
+    [Required, MaxLength(30)]
     public string LastName { get; set; }
 
     public Location Location { get; set; } = new Location();
 
-    [Required]
-    [EmailAddress]
-    [MaxLength(60)]
+    [Required, EmailAddress, MaxLength(60)]
     public string Email { get; set; }
 
     [MaxLength(120)]

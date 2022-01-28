@@ -6,8 +6,7 @@ public class Customer
 {
     public long Id { get; set; }
 
-    [Required]
-    [MaxLength(60)]
+    [Required, MaxLength(60)]
     public string Name { get; set; }
 
     public Location Location { get; set; } = new Location();
@@ -15,8 +14,7 @@ public class Customer
     [MaxLength(15)]
     public string? Phone { get; set; }
 
-    [EmailAddress]
-    [MaxLength(60)]
+    [EmailAddress, MaxLength(60)]
     public string? Email { get; set; }
 
     public string? Website { get; set; }

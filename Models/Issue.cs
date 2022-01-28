@@ -13,8 +13,7 @@ public class Issue
 {
     public long Id { get; set; }
 
-    [Required]
-    [MaxLength(255)]
+    [Required, MaxLength(255)]
     public string Subject { get; set; }
 
     public string? Description { get; set; }
