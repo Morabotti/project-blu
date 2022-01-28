@@ -29,16 +29,19 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget
-      - name: Install dotnet dependencies
+      - name: Install backend dependencies
         run: dotnet restore
-      - name: Install nodejs dependencies
+      - name: Install frontend dependencies
         working-directory: ./ClientApp
         run: npm ci
-      - name: Run nodejs style/type tests
+      - name: Test frontend
         working-directory: ./ClientApp
         run: npm run test
-      - name: Build backend & frontend
+      - name: Build frontend
+        working-directory: ./ClientApp
+        run: npm run build
+      - name: Build backend
         run: dotnet build --configuration Release --no-restore
-      - name: Test dotnet
+      - name: Test backend
         run: dotnet test --no-restore --verbosity normal
       
