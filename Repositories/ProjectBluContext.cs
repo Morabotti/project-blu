@@ -52,17 +52,23 @@ public class ProjectBluContext : DbContext
         // Auto-generated fields
         modelBuilder.Entity<User>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Issue>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
+        modelBuilder.Entity<Issue>().Property(p => p.UpdatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Project>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
+        modelBuilder.Entity<Project>().Property(p => p.UpdatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Document>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Customer>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Contact>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Deal>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Comment>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
+        modelBuilder.Entity<Comment>().Property(p => p.UpdatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<TimeEntry>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
+        modelBuilder.Entity<TimeEntry>().Property(p => p.UpdatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Member>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<WikiArticle>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
+        modelBuilder.Entity<WikiArticle>().Property(p => p.UpdatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<Attachment>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<News>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
+        modelBuilder.Entity<News>().Property(p => p.UpdatedAt).HasDefaultValueSql("getutcdate()");
 
         // Custom converters
         modelBuilder.Entity<Group>()

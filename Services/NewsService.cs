@@ -22,10 +22,6 @@ public class NewsService : INewsService
     )
     {
         var news = _mapper.Map<News>(request);
-        var now = DateTime.UtcNow;
-
-        news.CreatedAt = now;
-        news.UpdatedAt = now;
         news.AuthorId = user.Id;
 
         _context.News.Add(news);
@@ -38,7 +34,8 @@ public class NewsService : INewsService
     }
 
     public async Task<Response<PaginationResponse<NewsResponse>>> GetManyAsync(
-        PaginationQuery query)
+        PaginationQuery query
+    )
     {
         List<News> news = await _context.News
             .Include(i => i.Author)
@@ -77,7 +74,9 @@ public class NewsService : INewsService
     )
     {
         var news = await _context.News
-            .FirstOrDefaultAsync(i => user.Role == UserRole.Admin || i.AuthorId == user.Id);
+            .Where(i => i.Id == request.Id)
+            .Where(i => user.Role == UserRole.Admin || i.AuthorId == user.Id)
+            .FirstOrDefaultAsync();
 
         if (news is null)
         {
@@ -98,7 +97,9 @@ public class NewsService : INewsService
     )
     {
         var news = await _context.News
-            .FirstOrDefaultAsync(i => user.Role == UserRole.Admin || i.AuthorId == user.Id);
+            .Where(i => i.Id == id)
+            .Where(i => user.Role == UserRole.Admin || i.AuthorId == user.Id)
+            .FirstOrDefaultAsync();
 
         if (news is null)
         {

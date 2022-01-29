@@ -15,8 +15,7 @@ public class AuthController : ApiController
         _authService = authService;
     }
 
-    [AllowAnonymous]
-    [HttpPost("login")]
+    [HttpPost("login"), AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var response = await _authService.LoginAsync(request);

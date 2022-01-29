@@ -2,28 +2,33 @@
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectBlu.Controllers.Filters;
+using ProjectBlu.Models;
 using ProjectBlu.Repositories;
 using ProjectBlu.Services;
 using ProjectBlu.Services.Interfaces;
 using ProjectBlu.Settings;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ProjectBlu;
 
 public class Startup
 {
     public IConfiguration Configuration { get; }
+    public IWebHostEnvironment Environment { get; }
 
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration, IWebHostEnvironment environment)
     {
         Configuration = configuration;
+        Environment = environment;
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<INewsService, NewsService>();
+        services.AddTransient<IWikiService, WikiService>();
 
         services.AddAutoMapper(typeof(Startup));
 
@@ -50,34 +55,44 @@ public class Startup
             options.UseSqlServer(Configuration.GetConnectionString("Database"))
         );
 
-        services.AddSwaggerGen(options =>
+        services.AddAuthorization(options =>
         {
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
-            });
-
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement()
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                        Scheme = "oauth2",
-                        Name = "Bearer",
-                        In = ParameterLocation.Header,
-                    },
-                    new List<string>()
-                }
-            });
+            options.AddPolicy("Role", policy => policy.RequireClaim(
+                claimType: "role", UserRole.Admin.ToString())
+            );
         });
+
+        if (Environment.IsDevelopment())
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+                        },
+                        new List<string>()
+                    }
+                });
+            });
+        }
 
         services.AddControllers(options =>
         {
@@ -91,6 +106,7 @@ public class Startup
         .AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
 
         services.AddSpaStaticFiles(configuration =>
@@ -99,7 +115,7 @@ public class Startup
         });
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app)
     {
         using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
         {
@@ -107,7 +123,7 @@ public class Startup
             context.Database.Migrate();
         }
 
-        if (env.IsDevelopment())
+        if (Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();

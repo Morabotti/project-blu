@@ -104,7 +104,9 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getutcdate()");
 
                     b.HasKey("Id");
 
@@ -344,7 +346,9 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getutcdate()");
 
                     b.HasKey("Id");
 
@@ -465,7 +469,9 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("nvarchar(120)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getutcdate()");
 
                     b.HasKey("Id");
 
@@ -507,7 +513,9 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getutcdate()");
 
                     b.HasKey("Id");
 
@@ -547,7 +555,9 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getutcdate()");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -618,7 +628,7 @@ namespace ProjectBlu.Migrations
                             Email = "test.user@projectblu.com",
                             FirstName = "Test",
                             LastName = "User",
-                            Password = "$2a$11$y0YXPtJf.d7GYgrP7v7FjO6vRmnJcTDTyRcA9LxDuL/YaAiZyNOIq",
+                            Password = "$2a$11$oTDVxUDL59OF6y1n4e966unkKtenyUyVpeeBLvYWMbkTd18.Q5kR2",
                             Role = 1
                         });
                 });
@@ -658,7 +668,9 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("nvarchar(60)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getutcdate()");
 
                     b.HasKey("Id");
 
