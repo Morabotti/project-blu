@@ -12,6 +12,7 @@ public class ModelMapping : Profile
         CreateMap<CreateWikiCategoryRequest, WikiCategory>();
         CreateMap<CreateIssueCategoryRequest, IssueCategory>();
         CreateMap<CreateIssueStatusRequest, IssueStatus>();
+        CreateMap<CreateIssueRequest, Issue>();
 
         CreateMap<User, UserResponse>().ReverseMap();
         CreateMap<User, AuthorResponse>().ReverseMap();

@@ -12,6 +12,7 @@ public class Group
 
     public int? Position { get; set; }
 
+    // TODO: Add and validate permissions
     public List<string> Permissions { get; set; } = new List<string>();
 
     public ICollection<Member> Members { get; set; }

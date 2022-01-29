@@ -37,7 +37,7 @@ public class NewsService : INewsService
         PaginationQuery query
     )
     {
-        List<News> news = await _context.News
+        var news = await _context.News
             .Include(i => i.Author)
             .OrderByDescending(order => order.CreatedAt)
             .Skip(query.Offset.GetValueOrDefault(0))

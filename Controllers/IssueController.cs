@@ -15,6 +15,44 @@ public class IssueController : ApiController
         _issueService = issueService;
     }
 
+    [HttpPost]
+    public async Task<IActionResult> CreateIssue([FromBody] CreateIssueRequest request)
+    {
+        var response = await _issueService.CreateIssueAsync(request, GetUserClaim());
+        return HttpResponse(response);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetIssues(
+        [FromQuery] IssueQuery query,
+        [FromQuery] PaginationQuery pagination
+    )
+    {
+        var response = await _issueService.GetIssuesAsync(pagination, query);
+        return HttpResponse(response);
+    }
+
+    [HttpGet("{issueId}")]
+    public async Task<IActionResult> GetIssueById([FromRoute] int issueId)
+    {
+        var response = await _issueService.GetIssueByIdAsync(issueId, GetUserClaim());
+        return HttpResponse(response);
+    }
+
+    [HttpPut("{issueId}")]
+    public async Task<IActionResult> UpdateIssue([FromBody] IssueResponse request)
+    {
+        var response = await _issueService.UpdateIssueAsync(request, GetUserClaim());
+        return HttpResponse(response);
+    }
+
+    [HttpDelete("{issueId}"), Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteIssue([FromRoute] int issueId)
+    {
+        var response = await _issueService.DeleteIssueAsync(issueId);
+        return HttpResponse(response);
+    }
+
     [HttpPost("status"), Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateStatus([FromBody] CreateIssueStatusRequest request)
     {

@@ -1,6 +1,4 @@
-﻿using ProjectBlu.Models;
-
-namespace ProjectBlu.Dto.Responses;
+﻿namespace ProjectBlu.Dto.Responses;
 
 public class ProjectResponse
 {
