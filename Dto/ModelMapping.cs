@@ -13,6 +13,10 @@ public class ModelMapping : Profile
         CreateMap<CreateIssueCategoryRequest, IssueCategory>();
         CreateMap<CreateIssueStatusRequest, IssueStatus>();
         CreateMap<CreateIssueRequest, Issue>();
+        CreateMap<CreateGroupRequest, Group>();
+        CreateMap<CreateCustomerRequest, Customer>();
+        CreateMap<CreateContactRequest, Contact>();
+        CreateMap<CreateDealRequest, Deal>();
 
         CreateMap<User, UserResponse>().ReverseMap();
         CreateMap<User, AuthorResponse>().ReverseMap();

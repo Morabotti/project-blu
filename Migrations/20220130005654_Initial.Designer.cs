@@ -12,7 +12,7 @@ using ProjectBlu.Repositories;
 namespace ProjectBlu.Migrations
 {
     [DbContext(typeof(ProjectBluContext))]
-    [Migration("20220128234552_Initial")]
+    [Migration("20220130005654_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,6 +130,9 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getutcdate()");
 
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
@@ -156,6 +159,8 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("nvarchar(60)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
 
                     b.HasIndex("CustomerId");
 
@@ -209,7 +214,7 @@ namespace ProjectBlu.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getutcdate()");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -630,7 +635,7 @@ namespace ProjectBlu.Migrations
                             Email = "test.user@projectblu.com",
                             FirstName = "Test",
                             LastName = "User",
-                            Password = "$2a$11$oTDVxUDL59OF6y1n4e966unkKtenyUyVpeeBLvYWMbkTd18.Q5kR2",
+                            Password = "$2a$11$wFr/boeyTb5gEy8ftQceZulOP/nnNyTgD6X7oGlyEJdrwheZJqLaS",
                             Role = 1
                         });
                 });
@@ -724,6 +729,12 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.Contact", b =>
                 {
+                    b.HasOne("ProjectBlu.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ProjectBlu.Models.Customer", "Customer")
                         .WithMany("Contacts")
                         .HasForeignKey("CustomerId")
@@ -762,6 +773,8 @@ namespace ProjectBlu.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("ContactId");
                         });
+
+                    b.Navigation("CreatedBy");
 
                     b.Navigation("Customer");
 
@@ -812,9 +825,7 @@ namespace ProjectBlu.Migrations
                 {
                     b.HasOne("ProjectBlu.Models.Customer", "Customer")
                         .WithMany("Deals")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("ProjectBlu.Models.User", "Responsible")
                         .WithMany("ResponsibleDeals")

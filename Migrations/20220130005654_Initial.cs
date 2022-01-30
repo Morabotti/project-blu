@@ -138,36 +138,6 @@ namespace ProjectBlu.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Contacts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Location_Address = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Location_City = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Location_Zip = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Location_State = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Location_Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contacts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Contacts_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -221,6 +191,43 @@ namespace ProjectBlu.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Contacts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Location_Address = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Location_City = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Location_Zip = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Location_State = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Location_Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CreatedById = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contacts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contacts_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Contacts_Users_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Deals",
                 columns: table => new
                 {
@@ -231,7 +238,7 @@ namespace ProjectBlu.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()"),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: true),
                     ResponsibleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -241,8 +248,7 @@ namespace ProjectBlu.Migrations
                         name: "FK_Deals_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Deals_Users_ResponsibleId",
                         column: x => x.ResponsibleId,
@@ -452,7 +458,7 @@ namespace ProjectBlu.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "DeletedAt", "Email", "FirstName", "LastName", "Password", "Provider", "Role" },
-                values: new object[] { -1, null, "test.user@projectblu.com", "Test", "User", "$2a$11$oTDVxUDL59OF6y1n4e966unkKtenyUyVpeeBLvYWMbkTd18.Q5kR2", null, 1 });
+                values: new object[] { -1, null, "test.user@projectblu.com", "Test", "User", "$2a$11$wFr/boeyTb5gEy8ftQceZulOP/nnNyTgD6X7oGlyEJdrwheZJqLaS", null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attachments_AttachedId_Type",
@@ -468,6 +474,11 @@ namespace ProjectBlu.Migrations
                 name: "IX_Comments_CommentedId_Type",
                 table: "Comments",
                 columns: new[] { "CommentedId", "Type" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contacts_CreatedById",
+                table: "Contacts",
+                column: "CreatedById");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contacts_CustomerId",

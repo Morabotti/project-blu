@@ -29,6 +29,10 @@ public class Startup
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<INewsService, NewsService>();
         services.AddTransient<IWikiService, WikiService>();
+        services.AddTransient<IGroupService, GroupService>();
+        services.AddTransient<ICustomerService, CustomerService>();
+        services.AddTransient<IDealService, DealService>();
+        services.AddTransient<IIssueService, IssueService>();
 
         services.AddAutoMapper(typeof(Startup));
 

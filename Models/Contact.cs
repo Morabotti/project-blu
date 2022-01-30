@@ -28,4 +28,7 @@ public class Contact
 
     public int CustomerId { get; set; }
     public Customer Customer { get; set; }
+
+    public int CreatedById { get; set; }
+    public User CreatedBy { get; set; }
 }

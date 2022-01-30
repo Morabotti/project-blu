@@ -9,7 +9,8 @@ public class Customer
     [Required, MaxLength(60)]
     public string Name { get; set; }
 
-    public Location Location { get; set; } = new Location();
+    private Location _location;
+    public Location Location { get => _location ??= new Location(); set => _location = value; }
 
     [MaxLength(15)]
     public string? Phone { get; set; }
