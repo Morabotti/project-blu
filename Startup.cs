@@ -37,6 +37,7 @@ public class Startup
         services.AddTransient<IDealService, DealService>();
         services.AddTransient<IIssueService, IssueService>();
         services.AddTransient<IUserService, UserService>();
+        services.AddTransient<IProjectService, ProjectService>();
 
         services.AddAutoMapper(typeof(Startup));
 

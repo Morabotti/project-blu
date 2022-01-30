@@ -17,6 +17,8 @@ public class ModelMapping : Profile
         CreateMap<CreateCustomerRequest, Customer>();
         CreateMap<CreateContactRequest, Contact>();
         CreateMap<CreateDealRequest, Deal>();
+        CreateMap<CreateUserRequest, User>();
+        CreateMap<CreateProjectRequest, Project>();
 
         CreateMap<User, UserResponse>().ReverseMap();
         CreateMap<User, AuthorResponse>().ReverseMap();

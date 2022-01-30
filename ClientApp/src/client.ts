@@ -1,15 +1,14 @@
-import { LocalStorageKey } from '@enums';
-import { checkResponse } from '@utils/clientUtils';
+import { query } from '@utils/clientUtils';
 
-export const getStatus = (): Promise<string> => fetch(
-  `/api/status`,
-  {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem(LocalStorageKey.Token)}`
-    }
-  }
-)
-  .then(res => checkResponse(res))
-  .then(res => res.json());
+import {
+  AuthResponse,
+  BasicLoginRequest,
+  CreateUser,
+  User
+} from '@types';
+
+export const getMe = () => query<User>(`/api/auth/me`);
+export const loginBasic = (login: BasicLoginRequest) => query<AuthResponse>(`/api/auth/login`, 'POST', login);
+
+export const getSetup = () => query<boolean>(`/api/user/setup`);
+export const createSetup = (user: CreateUser) => query<User>(`/api/user/setup`, 'POST', user);

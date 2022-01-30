@@ -43,6 +43,46 @@ public class UserService : IUserService
         return token;
     }
 
+    public async Task<Response<UserResponse>> CreateUserAsync(CreateUserRequest request)
+    {
+        var user = _mapper.Map<User>(request);
+        user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        return new Response<UserResponse>(
+            _mapper.Map<UserResponse>(user)
+        );
+    }
+
+    public async Task<Response<UserResponse>> CreateFirstUserAsync(CreateUserRequest request)
+    {
+        var canSetup = await CanSetupAsync();
+
+        if (!canSetup)
+        {
+            return new Response<UserResponse>(null);
+        }
+
+        var user = _mapper.Map<User>(request);
+        user.Role = UserRole.Admin;
+        user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        return new Response<UserResponse>(
+            _mapper.Map<UserResponse>(user)
+        );
+    }
+
+    public async Task<bool> CanSetupAsync()
+    {
+        var user = await _context.Users.FirstOrDefaultAsync();
+        return user == null;
+    }
+
     public async Task ClearTokensAsync()
     {
         if (!_context.Database.CanConnect())

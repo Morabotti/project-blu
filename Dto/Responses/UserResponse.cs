@@ -8,6 +8,7 @@ public class UserResponse
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
+    public LocationResponse Location { get; set; }
     public UserRole Role { get; set; }
     public AuthProvider? Provider { get; set; }
     public DateTime CreatedAt { get; set; }
