@@ -280,6 +280,29 @@ namespace ProjectBlu.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserTokens",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Token = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getutcdate()"),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WikiArticles",
                 columns: table => new
                 {
@@ -458,7 +481,7 @@ namespace ProjectBlu.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "DeletedAt", "Email", "FirstName", "LastName", "Password", "Provider", "Role" },
-                values: new object[] { -1, null, "test.user@projectblu.com", "Test", "User", "$2a$11$wFr/boeyTb5gEy8ftQceZulOP/nnNyTgD6X7oGlyEJdrwheZJqLaS", null, 1 });
+                values: new object[] { -1, null, "test.user@projectblu.com", "Test", "User", "$2a$11$J0DBYDiz7BxwutRjXbme/ep4Vvv15GayRfRBLY1h1cU22FOqb5JB6", null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attachments_AttachedId_Type",
@@ -566,6 +589,16 @@ namespace ProjectBlu.Migrations
                 column: "Email");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserTokens_Type_Token",
+                table: "UserTokens",
+                columns: new[] { "Type", "Token" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTokens_UserId",
+                table: "UserTokens",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_WikiArticles_AuthorId",
                 table: "WikiArticles",
                 column: "AuthorId");
@@ -601,6 +634,9 @@ namespace ProjectBlu.Migrations
 
             migrationBuilder.DropTable(
                 name: "TimeEntries");
+
+            migrationBuilder.DropTable(
+                name: "UserTokens");
 
             migrationBuilder.DropTable(
                 name: "WikiArticles");

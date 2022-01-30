@@ -22,6 +22,7 @@ public class ProjectBluContext : DbContext
     public DbSet<WikiArticle> WikiArticles { get; set; }
     public DbSet<Attachment> Attachments { get; set; }
     public DbSet<News> News { get; set; }
+    public DbSet<UserToken> UserTokens { get; set; }
 
     public ProjectBluContext(DbContextOptions<ProjectBluContext> options) : base(options)
     {
@@ -48,6 +49,7 @@ public class ProjectBluContext : DbContext
         modelBuilder.Entity<Comment>().HasIndex(c => new { c.CommentedId, c.Type });
         modelBuilder.Entity<Attachment>().HasIndex(a => new { a.AttachedId, a.Type });
         modelBuilder.Entity<User>().HasIndex(u => u.Email);
+        modelBuilder.Entity<UserToken>().HasIndex(u => new { u.Type, u.Token });
 
         // Auto-generated fields
         modelBuilder.Entity<User>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
@@ -69,6 +71,7 @@ public class ProjectBluContext : DbContext
         modelBuilder.Entity<Attachment>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<News>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
         modelBuilder.Entity<News>().Property(p => p.UpdatedAt).HasDefaultValueSql("getutcdate()");
+        modelBuilder.Entity<UserToken>().Property(p => p.CreatedAt).HasDefaultValueSql("getutcdate()");
 
         // Custom converters
         modelBuilder.Entity<Group>()

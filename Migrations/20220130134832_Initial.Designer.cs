@@ -12,7 +12,7 @@ using ProjectBlu.Repositories;
 namespace ProjectBlu.Migrations
 {
     [DbContext(typeof(ProjectBluContext))]
-    [Migration("20220130005654_Initial")]
+    [Migration("20220130134832_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -635,9 +635,44 @@ namespace ProjectBlu.Migrations
                             Email = "test.user@projectblu.com",
                             FirstName = "Test",
                             LastName = "User",
-                            Password = "$2a$11$wFr/boeyTb5gEy8ftQceZulOP/nnNyTgD6X7oGlyEJdrwheZJqLaS",
+                            Password = "$2a$11$J0DBYDiz7BxwutRjXbme/ep4Vvv15GayRfRBLY1h1cU22FOqb5JB6",
                             Role = 1
                         });
+                });
+
+            modelBuilder.Entity("ProjectBlu.Models.UserToken", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getutcdate()");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("Type", "Token");
+
+                    b.ToTable("UserTokens");
                 });
 
             modelBuilder.Entity("ProjectBlu.Models.WikiArticle", b =>
@@ -995,6 +1030,17 @@ namespace ProjectBlu.Migrations
 
                     b.Navigation("Location")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectBlu.Models.UserToken", b =>
+                {
+                    b.HasOne("ProjectBlu.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProjectBlu.Models.WikiArticle", b =>

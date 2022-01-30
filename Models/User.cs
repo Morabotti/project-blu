@@ -1,4 +1,5 @@
 ﻿using ProjectBlu.Models.Owned;
+using System.Text.Json.Serialization;
 
 namespace ProjectBlu.Models;
 
@@ -30,7 +31,7 @@ public class User
     [Required, EmailAddress, MaxLength(60)]
     public string Email { get; set; }
 
-    [MaxLength(120)]
+    [MaxLength(120), JsonIgnore]
     public string? Password { get; set; }
 
     public AuthProvider? Provider { get; set; } = null;

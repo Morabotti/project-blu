@@ -13,5 +13,14 @@
     "Key": "XPASDb2cgaG91c2UgcG9ydGFsIHZlcnNpb24gMiEhIElmIHlvdSdyZSByZWFkaW5nIHRoaXMsIFNPC42",
     "Issuer": "project-blu",
     "Audience": "project-blu"
-  }
+  },
+  "MailSettings": {
+    "Sender": "<Sender email address>",
+    "DisplayName": "<Sender name>",
+    "Username": "<SMTP username>",
+    "Password": "<SMTP password>",
+    "Host": "<SMTP host address>",
+    "Port": 587
+  },
+  "Domain": "http://localhost:5000"
 }

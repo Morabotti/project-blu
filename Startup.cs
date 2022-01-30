@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectBlu.Controllers.Filters;
+using ProjectBlu.Jobs;
 using ProjectBlu.Models;
 using ProjectBlu.Repositories;
 using ProjectBlu.Services;
@@ -26,6 +27,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddSingleton<IMailService, MailService>();
+
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<INewsService, NewsService>();
         services.AddTransient<IWikiService, WikiService>();
@@ -33,8 +36,12 @@ public class Startup
         services.AddTransient<ICustomerService, CustomerService>();
         services.AddTransient<IDealService, DealService>();
         services.AddTransient<IIssueService, IssueService>();
+        services.AddTransient<IUserService, UserService>();
 
         services.AddAutoMapper(typeof(Startup));
+
+        services.AddHostedService<MailJobRunner>();
+        services.AddHostedService<UserTokenJobRunner>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
