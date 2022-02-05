@@ -44,7 +44,16 @@ export interface BasicLoginRequest {
   password: string;
 }
 
+export interface LoginForm extends BasicLoginRequest {
+  remember: boolean;
+}
+
 export interface AuthResponse {
   token: string;
   user: User;
+}
+
+export interface OIDCLoginRequest {
+  code: string;
+  state: string;
 }

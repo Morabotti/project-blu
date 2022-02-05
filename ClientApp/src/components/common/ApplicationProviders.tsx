@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, CSSReset } from '@chakra-ui/react';
 import theme from '@theme';
+import { AuthProvider } from '@hooks';
+import { BrowserRouter } from 'react-router-dom';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -13,16 +15,21 @@ const queryClient = new QueryClient({
     }
   }
 });
-interface Props {
 
+interface Props {
   children: React.ReactNode;
 }
 
 export const ApplicationProviders: FC<Props> = ({ children }: Props) => {
   return (
     <ChakraProvider theme={theme}>
+      <CSSReset />
       <QueryClientProvider client={queryClient}>
-        {children}
+        <BrowserRouter>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </BrowserRouter>
       </QueryClientProvider>
     </ChakraProvider>
   );

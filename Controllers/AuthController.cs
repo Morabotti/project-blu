@@ -4,7 +4,7 @@ namespace ProjectBlu.Controllers;
 
 [Route("api/[controller]")]
 [Produces("application/json")]
-[Authorize]
+[AllowAnonymous]
 [ApiController]
 public class AuthController : ApiController
 {
@@ -20,14 +20,14 @@ public class AuthController : ApiController
         _oidcService = oidcService;
     }
 
-    [HttpPost("login"), AllowAnonymous]
+    [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var response = await _authService.LoginAsync(request);
         return HttpResponse(response);
     }
 
-    [HttpGet("me")]
+    [HttpGet("me"), Authorize]
     public async Task<IActionResult> GetMe()
     {
         var user = GetUserClaim();
@@ -36,7 +36,14 @@ public class AuthController : ApiController
         return HttpResponse(response);
     }
 
-    [HttpGet("oidc/{provider}"), AllowAnonymous]
+    [HttpGet("oidc")]
+    public IActionResult GetOIDCProviders()
+    {
+        var providers = _oidcService.GetProviders();
+        return Ok(providers);
+    }
+
+    [HttpGet("oidc/{provider}")]
     public IActionResult LoginWithOIDC([FromRoute] string provider)
     {
         var response = _oidcService.CreateAuthorizationUrl(provider);
@@ -58,8 +65,8 @@ public class AuthController : ApiController
         return Redirect(response.Redirect);
     }
 
-    [HttpPost("oidc/{provider}"), AllowAnonymous]
-    public IActionResult OnOIDCLogin(
+    [HttpPost("oidc/{provider}")]
+    public async Task<IActionResult> OnOIDCLogin(
         [FromBody] OpenIdLoginRequest request,
         [FromRoute] string provider
     )
@@ -80,6 +87,14 @@ public class AuthController : ApiController
         Response.Cookies.Delete(OIDC_STATE);
         Response.Cookies.Delete(OIDC_NONCE);
 
-        return Ok();
+        var user = await _oidcService.LoginAsync(provider, request.Code, nonce);
+
+        if (user == null)
+        {
+            return BadRequest();
+        }
+
+        var response = await _authService.GetOrCreateOpenIdUserAsync(user);
+        return HttpResponse(response);
     }
 }

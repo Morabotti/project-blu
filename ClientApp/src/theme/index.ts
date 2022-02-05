@@ -11,6 +11,10 @@ const partialTheme: Partial<ChakraTheme> = {
   config: {
     initialColorMode: 'light',
     useSystemColorMode: true
+  },
+  fonts: {
+    body: 'Inter, system-ui, sans-serif',
+    heading: 'Work Sans, system-ui, sans-serif'
   }
 };
 

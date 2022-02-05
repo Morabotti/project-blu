@@ -1,3 +1,7 @@
+export enum Client {
+  GetOIDCProviders = 'oidc'
+}
+
 export enum LocalStorageKey {
   Token = 'token'
 }

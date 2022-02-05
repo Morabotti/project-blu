@@ -14,16 +14,52 @@ public class AuthService : IAuthService
     private readonly ProjectBluContext _context;
     private readonly JwtSettings _jwtSettings;
     private readonly IMapper _mapper;
+    private readonly IUserService _userService;
 
     public AuthService(
         ProjectBluContext context,
         IConfiguration configuration,
+        IUserService userService,
         IMapper mapper
     )
     {
         _context = context;
         _mapper = mapper;
+        _userService = userService;
         _jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
+    }
+
+    public async Task<Response<LoginResponse>> GetOrCreateOpenIdUserAsync(User user)
+    {
+        var databaseUser = await _context.Users
+            .Where(u => !u.DeletedAt.HasValue)
+            .Where(u => u.Email == user.Email)
+            .FirstOrDefaultAsync();
+
+        if (databaseUser != null)
+        {
+            return new Response<LoginResponse>(
+                new LoginResponse
+                {
+                    Token = GenerateJwtToken(databaseUser),
+                    User = _mapper.Map<UserResponse>(user)
+                }
+            );
+        }
+
+        var canSetup = await _userService.CanSetupAsync();
+        user.Role = canSetup ? UserRole.Admin : UserRole.User;
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        return new Response<LoginResponse>(
+            new LoginResponse
+            {
+                Token = GenerateJwtToken(user),
+                User = _mapper.Map<UserResponse>(user)
+            }
+        );
     }
 
     public async Task<Response<UserResponse>> GetUserAsync(int id)
@@ -47,7 +83,7 @@ public class AuthService : IAuthService
     {
         var user = await _context.Users
             .Where(u => !u.DeletedAt.HasValue)
-            .Where(u => u.Email == request.Email)
+            .Where(u => u.Email == request.Email && u.Password != null)
             .FirstOrDefaultAsync();
 
         if (user is null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
