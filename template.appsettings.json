@@ -22,5 +22,18 @@
     "Host": "<SMTP host address>",
     "Port": 587
   },
-  "Domain": "http://localhost:5000"
+  "Domain": "http://localhost:5000",
+  "OIDC": {
+    "Microsoft": {
+      "ClientId": "",
+      "ClientSecret": "",
+      "Tenant": "common",
+      "DiscoveryUrl": "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration"
+    },
+    "Google": {
+      "ClientId": "",
+      "ClientSecret": "",
+      "DiscoveryUrl": "https://accounts.google.com/.well-known/openid-configuration"
+    }
+  }
 }
