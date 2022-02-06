@@ -1,4 +1,6 @@
-﻿using ProjectBlu.Models;
+﻿using ProjectBlu.Enums;
+using ProjectBlu.Models;
+using System.Security.Claims;
 
 namespace ProjectBlu.Controllers;
 
@@ -14,7 +16,7 @@ public class ApiController : ControllerBase
 
     protected UserResponse GetUserClaim()
     {
-        string idClaim = GetClaimValue("id");
+        string idClaim = GetClaimValue(ClaimTypes.NameIdentifier);
 
         if (idClaim is null)
         {
@@ -24,11 +26,11 @@ public class ApiController : ControllerBase
         return new UserResponse
         {
             Id = int.Parse(idClaim),
-            FirstName = GetClaimValue("firstName"),
-            LastName = GetClaimValue("lastName"),
-            Email = GetClaimValue("email"),
-            Role = GetClaimValue("role") == "Admin" ? UserRole.Admin : UserRole.User,
-            CreatedAt = DateTime.Parse(GetClaimValue("createdAt"))
+            FirstName = GetClaimValue(JwtClaims.GivenName),
+            LastName = GetClaimValue(JwtClaims.FamilyName),
+            Email = GetClaimValue(JwtClaims.Email),
+            Role = GetClaimValue(JwtClaims.Role) == "Admin" ? UserRole.Admin : UserRole.User,
+            CreatedAt = DateTime.Parse(GetClaimValue(JwtClaims.CreatedAt))
         };
     }
 

@@ -15,6 +15,16 @@ const partialTheme: Partial<ChakraTheme> = {
   fonts: {
     body: 'Inter, system-ui, sans-serif',
     heading: 'Work Sans, system-ui, sans-serif'
+  },
+  styles: {
+    global: {
+      'html, body, #mount': {
+        height: '100%',
+        width: '100%',
+        margin: 0,
+        backgroundColor: 'gray.100'
+      }
+    }
   }
 };
 

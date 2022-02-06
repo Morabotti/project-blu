@@ -6,6 +6,7 @@ using ProjectBlu.Models;
 using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using ProjectBlu.Enums;
 
 namespace ProjectBlu.Services;
 
@@ -115,12 +116,14 @@ public class AuthService : IAuthService
 
         var claims = new List<Claim>
         {
-            new Claim("id", user.Id.ToString()),
-            new Claim("firstName", user.FirstName),
-            new Claim("lastName", user.LastName),
-            new Claim("email", user.Email),
-            new Claim("role", user.Role.ToString()),
-            new Claim("createdAt", user.CreatedAt.ToString())
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(JwtClaims.Id, user.Id.ToString()),
+            new Claim(JwtClaims.GivenName, user.FirstName),
+            new Claim(JwtClaims.FamilyName, user.LastName),
+            new Claim(JwtClaims.Name, $"{user.FirstName} {user.LastName}"),
+            new Claim(JwtClaims.Email, user.Email),
+            new Claim(JwtClaims.Role, user.Role.ToString()),
+            new Claim(JwtClaims.CreatedAt, user.CreatedAt.ToString())
         };
 
         var token = new JwtSecurityToken(

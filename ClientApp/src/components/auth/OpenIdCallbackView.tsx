@@ -1,3 +1,4 @@
+import { OuterLoader } from '@components/common';
 import { useOpenIdConnectLayer } from '@hooks';
 
 export const OpenIdCallbackView: React.FC = () => {
@@ -5,15 +6,11 @@ export const OpenIdCallbackView: React.FC = () => {
 
   if (loading) {
     return (
-      <div>
-        Loading auth
-      </div>
+      <OuterLoader text='Authenticating...' />
     );
   }
 
   return (
-    <div>
-      Loading tokens
-    </div>
+    <OuterLoader text='Loading tokens...' />
   );
 };

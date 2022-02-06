@@ -1,4 +1,5 @@
-﻿using ProjectBlu.Models;
+﻿using ProjectBlu.Enums;
+using ProjectBlu.Models;
 using ProjectBlu.Services.Interfaces;
 using ProjectBlu.Settings;
 using System.IdentityModel.Tokens.Jwt;
@@ -145,9 +146,9 @@ public class OIDCService : IOIDCService
 
     private static User GenerateUser(JwtSecurityToken token, AuthProvider provider)
     {
-        var email = token.Claims.First(claim => claim.Type == "email").Value;
-        var firstName = token.Claims.First(claim => claim.Type == "given_name").Value;
-        var lastName = token.Claims.First(claim => claim.Type == "family_name").Value;
+        var email = token.Claims.First(claim => claim.Type == JwtClaims.Email).Value;
+        var firstName = token.Claims.First(claim => claim.Type == JwtClaims.GivenName).Value;
+        var lastName = token.Claims.First(claim => claim.Type == JwtClaims.FamilyName).Value;
 
         return new User
         {

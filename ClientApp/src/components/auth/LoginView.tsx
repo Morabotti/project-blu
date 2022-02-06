@@ -1,14 +1,10 @@
-import { Flex, Stack, Heading, Box, FormControl, FormLabel, Input, Checkbox, Button, Link, Text, FormErrorMessage, Center } from '@chakra-ui/react';
+import { Flex, Stack, Heading, Box, FormControl, FormLabel, Input, Checkbox, Button, Link, Text, FormErrorMessage } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaMicrosoft } from 'react-icons/fa';
 import { useLogin } from '@hooks';
 import { LoginForm } from '@types';
 import { useForm } from 'react-hook-form';
-import styled from '@emotion/styled';
-
-const ButtonLink = styled(Link)`
-  text-decoration: none !important;
-`;
+import { SocialMediaButton } from '@components/auth';
 
 const getProviderOptions = (provider: string): [string?, string?, string?, JSX.Element?] => {
   switch (provider) {
@@ -32,12 +28,7 @@ export const LoginView: React.FC = () => {
   const activeProviders = Object.entries(providers.data ?? {}).filter(e => e[1]);
 
   return (
-    <Flex
-      minH='100vh'
-      align='center'
-      justify='center'
-      bg='gray.100'
-    >
+    <Flex minH='100vh' align='center' justify='center'>
       <Stack spacing={8} mx='auto' maxW='lg' py={12} px={6} width='full'>
         <Stack align='center'>
           <Heading fontSize='4xl'>Project-Blu</Heading>
@@ -45,12 +36,7 @@ export const LoginView: React.FC = () => {
             Self hosted & managed <Link color='blue.400'>project tracking software</Link>
           </Text>
         </Stack>
-        <Box
-          rounded='lg'
-          bg='white'
-          boxShadow='lg'
-          p={8}
-        >
+        <Box rounded='lg' bg='white' boxShadow='lg' p={8}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4}>
               <FormControl id='form-email' isInvalid={!!errors.email}>
@@ -106,18 +92,14 @@ export const LoginView: React.FC = () => {
                 {activeProviders.map(provider => {
                   const [variant, schema, text, icon] = getProviderOptions(provider[0]);
                   return (
-                    <ButtonLink href={`/api/auth/oidc/${provider[0]}`} key={provider[0]}>
-                      <Button
-                        w='full'
-                        maxW='md'
-                        variant={variant}
-                        colorScheme={schema}
-                        leftIcon={icon}>
-                        <Center>
-                          <Text>{text}</Text>
-                        </Center>
-                      </Button>
-                    </ButtonLink>
+                    <SocialMediaButton
+                      provider={provider[0]}
+                      key={provider[0]}
+                      icon={icon}
+                      schema={schema}
+                      variant={variant}
+                      text={text}
+                    />
                   );
                 })}
               </Stack>

@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { ApplicationProviders, ApplicationNavigation } from '@components/common';
+import { ApplicationProviders, ApplicationNavigation, OuterLoader } from '@components/common';
 import { MainView } from '@components/main';
 import { ApplicationAuthLayer, LoginView, OpenIdCallbackView } from '@components/auth';
 import { Suspense } from 'react';
@@ -8,7 +8,7 @@ import '../index.less';
 
 const Application = () => (
   <ApplicationProviders>
-    <Suspense fallback={<div>Upper suspense load</div>}>
+    <Suspense fallback={<OuterLoader text='Loading assets...' />}>
       <Routes>
         <Route path='/' element={
           <ApplicationAuthLayer>

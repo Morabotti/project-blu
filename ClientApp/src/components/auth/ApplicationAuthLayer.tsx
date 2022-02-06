@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthLayer } from '@hooks';
+import { OuterLoader } from '@components/common';
 
 interface Props {
   children?: React.ReactNode;
@@ -11,7 +12,7 @@ export const ApplicationAuthLayer: React.FC<Props> = memo(({ children }: Props) 
 
   if (loading && auth === null) {
     return (
-      <p>Loading</p>
+      <OuterLoader text='Authenticating...' />
     );
   }
 
