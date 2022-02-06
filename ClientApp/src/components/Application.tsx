@@ -4,8 +4,6 @@ import { MainView } from '@components/main';
 import { ApplicationAuthLayer, LoginView, OpenIdCallbackView } from '@components/auth';
 import { Suspense } from 'react';
 
-import '../index.less';
-
 const Application = () => (
   <ApplicationProviders>
     <Suspense fallback={<OuterLoader text='Loading assets...' />}>
@@ -15,7 +13,7 @@ const Application = () => (
             <ApplicationNavigation />
           </ApplicationAuthLayer>
         }>
-          <Route index element={<div>home</div>} />
+          <Route index element={<div style={{ height: '100%' }}>home</div>} />
           <Route path='issues' element={<div>issues</div>} />
         </Route>
         <Route path='/login' element={<LoginView />} />

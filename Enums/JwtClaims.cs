@@ -9,4 +9,5 @@ public static class JwtClaims
     public const string Email = "email";
     public const string Role = "role";
     public const string CreatedAt = "createdAt";
+    public const string Picture = "picture";
 }

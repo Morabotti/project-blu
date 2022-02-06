@@ -67,14 +67,10 @@ export const LoginView: React.FC = () => {
                   <Link color='blue.400'>Forgot password?</Link>
                 </Stack>
                 <Button
-                  bg='blue.400'
-                  color='white'
                   type='submit'
                   isLoading={loading}
+                  colorScheme='blue'
                   loadingText='Authenticating'
-                  _hover={{
-                    bg: 'blue.500'
-                  }}
                 >
                   Sign in
                 </Button>

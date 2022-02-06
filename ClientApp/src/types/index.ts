@@ -33,10 +33,17 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  image: null | UserImage;
   location: OwnedLocation;
   role: UserRole;
   provider: AuthProvider | null;
   createdAt: string;
+}
+
+export interface UserImage {
+  id: number;
+  source: string;
+  hash: null | string;
 }
 
 export interface BasicLoginRequest {

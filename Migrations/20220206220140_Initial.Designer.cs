@@ -12,7 +12,7 @@ using ProjectBlu.Repositories;
 namespace ProjectBlu.Migrations
 {
     [DbContext(typeof(ProjectBluContext))]
-    [Migration("20220130134832_Initial")]
+    [Migration("20220206220140_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -301,6 +301,38 @@ namespace ProjectBlu.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("ProjectBlu.Models.ImageAsset", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("Hash")
+                        .HasMaxLength(63)
+                        .HasColumnType("nvarchar(63)");
+
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ImageAssets");
                 });
 
             modelBuilder.Entity("ProjectBlu.Models.Issue", b =>
@@ -606,6 +638,9 @@ namespace ProjectBlu.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -625,6 +660,8 @@ namespace ProjectBlu.Migrations
 
                     b.HasIndex("Email");
 
+                    b.HasIndex("ImageId");
+
                     b.ToTable("Users");
 
                     b.HasData(
@@ -635,7 +672,7 @@ namespace ProjectBlu.Migrations
                             Email = "test.user@projectblu.com",
                             FirstName = "Test",
                             LastName = "User",
-                            Password = "$2a$11$J0DBYDiz7BxwutRjXbme/ep4Vvv15GayRfRBLY1h1cU22FOqb5JB6",
+                            Password = "$2a$11$yhGRPAJB0spPxbGw4g7GW.SFGFiFTJntsqKeb1KeMTUelepk1G2Je",
                             Role = 1
                         });
                 });
@@ -995,6 +1032,10 @@ namespace ProjectBlu.Migrations
 
             modelBuilder.Entity("ProjectBlu.Models.User", b =>
                 {
+                    b.HasOne("ProjectBlu.Models.ImageAsset", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
                     b.OwnsOne("ProjectBlu.Models.Owned.Location", "Location", b1 =>
                         {
                             b1.Property<int>("UserId")
@@ -1027,6 +1068,8 @@ namespace ProjectBlu.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
+
+                    b.Navigation("Image");
 
                     b.Navigation("Location")
                         .IsRequired();

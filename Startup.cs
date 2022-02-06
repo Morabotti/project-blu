@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using ProjectBlu.Controllers.Filters;
 using ProjectBlu.Extensions;
@@ -30,6 +31,7 @@ public class Startup
         services.AddSingleton<IMailService, MailService>();
         services.AddSingleton<IOIDCService, OIDCService>();
 
+        services.AddTransient<IAssetService, AssetService>();
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<INewsService, NewsService>();
         services.AddTransient<IWikiService, WikiService>();
@@ -124,7 +126,15 @@ public class Startup
 
         app.UseRouting();
 
-        app.UseStaticFiles();
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(Path.Combine(
+                Environment.ContentRootPath,
+                Configuration.GetValue<string>("StaticFolder")
+            )),
+            RequestPath = "/api/content"
+        });
+
         app.UseSpaStaticFiles();
 
         app.UseAuthentication();

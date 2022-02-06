@@ -150,14 +150,31 @@ public class OIDCService : IOIDCService
         var firstName = token.Claims.First(claim => claim.Type == JwtClaims.GivenName).Value;
         var lastName = token.Claims.First(claim => claim.Type == JwtClaims.FamilyName).Value;
 
-        return new User
+        var user = new User
         {
             Email = email,
             FirstName = firstName,
             LastName = lastName,
             Password = null,
-            Provider = provider
+            Provider = provider,
         };
+
+        if (provider == AuthProvider.Google)
+        {
+            var picture = token.Claims.FirstOrDefault(claim => claim.Type == JwtClaims.Picture).Value;
+
+            if (picture == null)
+            {
+                return user;
+            }
+
+            user.Image = new ImageAsset
+            {
+                Source = picture
+            };
+        }
+
+        return user;
     }
 
     private static JwtSecurityToken ReadJwtToken(string token)

@@ -22,6 +22,7 @@ public class ModelMapping : Profile
 
         CreateMap<User, UserResponse>().ReverseMap();
         CreateMap<User, AuthorResponse>().ReverseMap();
+        CreateMap<ImageAsset, UserImageResponse>().ReverseMap();
         CreateMap<AuthorResponse, UserResponse>().ReverseMap();
         CreateMap<News, NewsResponse>().ReverseMap();
         CreateMap<WikiCategory, WikiCategoryResponse>().ReverseMap();

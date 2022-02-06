@@ -22,6 +22,7 @@
     "Host": "<SMTP host address>",
     "Port": 587
   },
+  "StaticFolder": "static",
   "Domain": "http://localhost:5000",
   "OIDC": {
     "Microsoft": {

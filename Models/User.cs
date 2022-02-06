@@ -42,6 +42,9 @@ public class User
 
     public DateTime? DeletedAt { get; set; }
 
+    public int? ImageId { get; set; }
+    public ImageAsset Image { get; set; }
+
     public ICollection<Deal> ResponsibleDeals { get; set; }
     public ICollection<Member> Members { get; set; }
     public ICollection<WikiArticle> Articles { get; set; }

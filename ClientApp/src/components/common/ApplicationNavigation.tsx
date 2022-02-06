@@ -1,5 +1,7 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+import { AppNavBar } from '@components/common';
+import { Flex } from '@chakra-ui/react';
 
 interface Props {
   children?: React.ReactNode;
@@ -7,13 +9,13 @@ interface Props {
 
 export const ApplicationNavigation: React.FC<Props> = () => {
   return (
-    <div>
-      <div>navigation</div>
-      <div>
-        <Suspense fallback={<div>Inner suspense load</div>}>
+    <Flex minH='100vh' flexDir='column' height='full'>
+      <AppNavBar />
+      <Flex as='main' height='full' flexDir='column' grow={1}>
+        <Suspense fallback={<div />}>
           <Outlet />
         </Suspense>
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 };

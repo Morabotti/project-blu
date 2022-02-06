@@ -23,6 +23,7 @@ public class ProjectBluContext : DbContext
     public DbSet<Attachment> Attachments { get; set; }
     public DbSet<News> News { get; set; }
     public DbSet<UserToken> UserTokens { get; set; }
+    public DbSet<ImageAsset> ImageAssets { get; set; }
 
     public ProjectBluContext(DbContextOptions<ProjectBluContext> options) : base(options)
     {
