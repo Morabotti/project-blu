@@ -10,7 +10,7 @@ export const AppNavBar: React.FC<Props> = () => {
   const { revokeAuth, auth } = useAuth();
 
   return (
-    <Box>
+    <Box zIndex='docked' position='fixed' top={0} left={0} w='full'>
       <Flex
         bg='white'
         color='grey.600'
@@ -49,7 +49,6 @@ export const AppNavBar: React.FC<Props> = () => {
             Logout
           </Button>
           <Avatar
-            bg='facebook.500'
             size='md'
             src={staticFilePath(auth?.user.image?.source)}
           />

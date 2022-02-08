@@ -1,13 +1,6 @@
 ﻿using ProjectBlu.Repositories;
 using ProjectBlu.Services.Interfaces;
-using Microsoft.IdentityModel.Tokens;
-using ProjectBlu.Settings;
 using ProjectBlu.Models;
-using System.Text;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-using ProjectBlu.Enums;
-using System.Net.Http.Headers;
 
 namespace ProjectBlu.Services;
 
@@ -36,7 +29,7 @@ public class AssetService : IAssetService
         CreateDirectory();
 
         var download = await DownloadImageAsync(image.Source);
-        var rawName = $"{DateTime.UtcNow:yyyyMMddHHmmss}-{Guid.NewGuid()}{download.Extension}";
+        var rawName = $"{DateTime.UtcNow:yyyyMMddHHmmss}-{Guid.NewGuid()}-{Guid.NewGuid():N}{download.Extension}";
         var nameWithExt = $"{fileName}{download.Extension}";
 
         var updatedAsset = new ImageAsset

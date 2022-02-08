@@ -4,7 +4,6 @@ using ProjectBlu.Services.Interfaces;
 using ProjectBlu.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace ProjectBlu.Services;
 
