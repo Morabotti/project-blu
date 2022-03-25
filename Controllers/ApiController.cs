@@ -1,4 +1,5 @@
-﻿using ProjectBlu.Enums;
+﻿using HashidsNet;
+using ProjectBlu.Enums;
 using ProjectBlu.Models;
 using System.Security.Claims;
 
@@ -23,9 +24,17 @@ public class ApiController : ControllerBase
             throw new ArgumentNullException("Id claim not found!");
         }
 
+        var decoded = GetHashIds().Decode(idClaim);
+
+        if (decoded is null || decoded.Length == 0)
+        {
+            throw new ArgumentNullException("Id decode failed.");
+        }
+
         return new UserResponse
         {
-            Id = int.Parse(idClaim),
+            Id = idClaim,
+            DecodeId = decoded[0],
             FirstName = GetClaimValue(JwtClaims.GivenName),
             LastName = GetClaimValue(JwtClaims.FamilyName),
             Email = GetClaimValue(JwtClaims.Email),
@@ -37,5 +46,10 @@ public class ApiController : ControllerBase
     private string GetClaimValue(string claimType)
     {
         return User.FindFirst(claimType)?.Value;
+    }
+
+    private IHashids GetHashIds()
+    {
+        return (IHashids)HttpContext.RequestServices.GetService(typeof(IHashids));
     }
 }

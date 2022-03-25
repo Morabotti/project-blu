@@ -24,6 +24,7 @@
   },
   "StaticFolder": "static",
   "Domain": "http://localhost:5000",
+  "HashId": "",
   "OIDC": {
     "Microsoft": {
       "ClientId": "",

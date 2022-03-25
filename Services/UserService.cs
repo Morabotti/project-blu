@@ -32,7 +32,7 @@ public class UserService : IUserService
             ExpiresAt = DateTime.UtcNow.AddDays(1),
             Type = TokenType.ResetPassword,
             Token = $"{Guid.NewGuid()}-{Guid.NewGuid()}",
-            UserId = user.Id
+            UserId = user.DecodeId
         };
 
         _context.UserTokens.Add(token);

@@ -22,7 +22,7 @@ public class CustomerService : ICustomerService
     )
     {
         var contact = _mapper.Map<Contact>(request);
-        contact.CreatedById = user.Id;
+        contact.CreatedById = user.DecodeId;
 
         _context.Contacts.Add(contact);
         await _context.SaveChangesAsync();
@@ -115,7 +115,7 @@ public class CustomerService : ICustomerService
     )
     {
         var contact = await _context.Contacts
-            .Where(i => user.Role == UserRole.Admin || i.CreatedById == user.Id)
+            .Where(i => user.Role == UserRole.Admin || i.CreatedById == user.DecodeId)
             .FirstOrDefaultAsync(i => i.Id == request.Id);
 
         if (contact is null)
@@ -136,7 +136,8 @@ public class CustomerService : ICustomerService
         CustomerResponse request
     )
     {
-        var customer = await _context.Customers.FirstOrDefaultAsync(i => i.Id == request.Id);
+        var mapped = _mapper.Map<Customer>(request);
+        var customer = await _context.Customers.FirstOrDefaultAsync(i => i.Id == mapped.Id);
 
         if (customer is null)
         {
@@ -147,7 +148,7 @@ public class CustomerService : ICustomerService
 
         await _context.SaveChangesAsync();
 
-        return await GetCustomerByIdAsync(request.Id);
+        return await GetCustomerByIdAsync(mapped.Id);
     }
 
     public async Task<Response<ContactResponse>> DeleteContactAsync(
@@ -156,7 +157,7 @@ public class CustomerService : ICustomerService
     )
     {
         var contact = await _context.Contacts
-            .Where(i => user.Role == UserRole.Admin || i.CreatedById == user.Id)
+            .Where(i => user.Role == UserRole.Admin || i.CreatedById == user.DecodeId)
             .FirstOrDefaultAsync(i => i.Id == id);
 
         if (contact is null)

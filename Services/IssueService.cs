@@ -23,7 +23,7 @@ public class IssueService : IIssueService
     {
         var issue = _mapper.Map<Issue>(request);
 
-        issue.AuthorId = user.Id;
+        issue.AuthorId = user.DecodeId;
 
         _context.Issues.Add(issue);
         await _context.SaveChangesAsync();
@@ -66,7 +66,7 @@ public class IssueService : IIssueService
         UserResponse user
     )
     {
-        var group = await GetUserGroupAsync(id, user.Id);
+        var group = await GetUserGroupAsync(id, user.DecodeId);
 
         if (group is null && user.Role != UserRole.Admin)
         {
@@ -81,7 +81,7 @@ public class IssueService : IIssueService
             .Include(i => i.Status)
             .Include(i => i.Project)
             .Include(i => i.TimeEntries.Where(x => user.Role == UserRole.Admin
-                || x.UserId == user.Id
+                || x.UserId == user.DecodeId
                 || group.Permissions.Contains("showTimeEntry")))
             .AsNoTracking()
             .AsSplitQuery()

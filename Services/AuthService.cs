@@ -7,6 +7,7 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using ProjectBlu.Enums;
+using HashidsNet;
 
 namespace ProjectBlu.Services;
 
@@ -14,6 +15,7 @@ public class AuthService : IAuthService
 {
     private readonly ProjectBluContext _context;
     private readonly JwtSettings _jwtSettings;
+    private readonly IHashids _hashIds;
     private readonly IMapper _mapper;
     private readonly IUserService _userService;
     private readonly IAssetService _assetService;
@@ -23,6 +25,7 @@ public class AuthService : IAuthService
         IConfiguration configuration,
         IUserService userService,
         IAssetService assetService,
+        IHashids hashIds,
         IMapper mapper
     )
     {
@@ -30,6 +33,7 @@ public class AuthService : IAuthService
         _mapper = mapper;
         _userService = userService;
         _assetService = assetService;
+        _hashIds = hashIds;
         _jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
     }
 
@@ -128,10 +132,12 @@ public class AuthService : IAuthService
             SecurityAlgorithms.HmacSha256
         );
 
+        var hashId = _hashIds.Encode(user.Id);
+
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(JwtClaims.Id, user.Id.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, hashId),
+            new Claim(JwtClaims.Id, hashId),
             new Claim(JwtClaims.GivenName, user.FirstName),
             new Claim(JwtClaims.FamilyName, user.LastName),
             new Claim(JwtClaims.Name, $"{user.FirstName} {user.LastName}"),

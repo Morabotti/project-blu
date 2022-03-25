@@ -503,7 +503,7 @@ namespace ProjectBlu.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "DeletedAt", "Email", "FirstName", "ImageId", "LastName", "Password", "Provider", "Role" },
-                values: new object[] { -1, null, "test.user@projectblu.com", "Test", null, "User", "$2a$11$yhGRPAJB0spPxbGw4g7GW.SFGFiFTJntsqKeb1KeMTUelepk1G2Je", null, 1 });
+                values: new object[] { 1, null, "test.user@projectblu.com", "Test", null, "User", "$2a$11$7FmnXnGsum5uDfHfX86lC.lCnGBuVb/Y3DwdQciFpBtdEm2NH1.g.", null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attachments_AttachedId_Type",

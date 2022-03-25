@@ -665,12 +665,12 @@ namespace ProjectBlu.Migrations
                     b.HasData(
                         new
                         {
-                            Id = -1,
+                            Id = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "test.user@projectblu.com",
                             FirstName = "Test",
                             LastName = "User",
-                            Password = "$2a$11$yhGRPAJB0spPxbGw4g7GW.SFGFiFTJntsqKeb1KeMTUelepk1G2Je",
+                            Password = "$2a$11$7FmnXnGsum5uDfHfX86lC.lCnGBuVb/Y3DwdQciFpBtdEm2NH1.g.",
                             Role = 1
                         });
                 });

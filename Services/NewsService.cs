@@ -22,7 +22,7 @@ public class NewsService : INewsService
     )
     {
         var news = _mapper.Map<News>(request);
-        news.AuthorId = user.Id;
+        news.AuthorId = user.DecodeId;
 
         _context.News.Add(news);
         await _context.SaveChangesAsync();
@@ -75,7 +75,7 @@ public class NewsService : INewsService
     {
         var news = await _context.News
             .Where(i => i.Id == request.Id)
-            .Where(i => user.Role == UserRole.Admin || i.AuthorId == user.Id)
+            .Where(i => user.Role == UserRole.Admin || i.AuthorId == user.DecodeId)
             .FirstOrDefaultAsync();
 
         if (news is null)
@@ -84,7 +84,8 @@ public class NewsService : INewsService
         }
 
         UpdateMapper.MapValues(request, news);
-        news.AuthorId = request.Author.Id;
+
+        // TODO: Check if author has changed
 
         await _context.SaveChangesAsync();
 
@@ -98,7 +99,7 @@ public class NewsService : INewsService
     {
         var news = await _context.News
             .Where(i => i.Id == id)
-            .Where(i => user.Role == UserRole.Admin || i.AuthorId == user.Id)
+            .Where(i => user.Role == UserRole.Admin || i.AuthorId == user.DecodeId)
             .FirstOrDefaultAsync();
 
         if (news is null)

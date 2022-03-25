@@ -90,7 +90,7 @@ public class ProjectBluContext : DbContext
         // Data seeding
         modelBuilder.Entity<User>().HasData(new User
         {
-            Id = -1,
+            Id = 1,
             FirstName = "Test",
             LastName = "User",
             Email = "test.user@projectblu.com",

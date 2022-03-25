@@ -74,7 +74,7 @@ public class DealService : IDealService
     )
     {
         var deal = await _context.Deals
-            .Where(i => user.Role == UserRole.Admin || user.Id == i.ResponsibleId)
+            .Where(i => user.Role == UserRole.Admin || user.DecodeId == i.ResponsibleId)
             .FirstOrDefaultAsync(i => i.Id == request.Id);
 
         if (deal is null)
@@ -94,7 +94,7 @@ public class DealService : IDealService
     public async Task<Response<DealResponse>> DeleteAsync(int id, UserResponse user)
     {
         var deal = await _context.Deals
-            .Where(i => user.Role == UserRole.Admin || user.Id == i.ResponsibleId)
+            .Where(i => user.Role == UserRole.Admin || user.DecodeId == i.ResponsibleId)
             .FirstOrDefaultAsync(i => i.Id == id);
 
         if (deal is null)

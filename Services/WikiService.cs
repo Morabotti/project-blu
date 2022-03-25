@@ -22,7 +22,7 @@ public class WikiService : IWikiService
     )
     {
         var article = _mapper.Map<WikiArticle>(request);
-        article.AuthorId = user.Id;
+        article.AuthorId = user.DecodeId;
 
         _context.WikiArticles.Add(article);
         await _context.SaveChangesAsync();
@@ -54,7 +54,7 @@ public class WikiService : IWikiService
     {
         var article = await _context.WikiArticles
             .Where(i => i.Id == id)
-            .Where(i => i.AuthorId == user.Id || i.IsPublic || user.Role == UserRole.Admin)
+            .Where(i => i.AuthorId == user.DecodeId || i.IsPublic || user.Role == UserRole.Admin)
             .Include(i => i.Category)
             .Include(i => i.Author)
             .AsNoTracking()
@@ -76,7 +76,7 @@ public class WikiService : IWikiService
                 Tags = i.Tags,
                 Description = i.Description,
                 ArticleCount = i.Articles
-                    .Where(p => p.IsPublic || user.Role == UserRole.Admin || p.AuthorId == user.Id)
+                    .Where(p => p.IsPublic || user.Role == UserRole.Admin || p.AuthorId == user.DecodeId)
                     .Count(),
             })
             .AsNoTracking()
@@ -93,7 +93,7 @@ public class WikiService : IWikiService
         var category = await _context.WikiCategories
             .Where(i => i.Id == id)
             .Include(i => i.Articles
-                .Where(a => (a.AuthorId == user.Id || a.IsPublic) || user.Role == UserRole.Admin))
+                .Where(a => (a.AuthorId == user.DecodeId || a.IsPublic) || user.Role == UserRole.Admin))
             .ThenInclude(i => i.Author)
             .AsNoTracking()
             .AsSplitQuery()
@@ -111,7 +111,7 @@ public class WikiService : IWikiService
     {
         var article = await _context.WikiArticles
             .Where(i => i.Id == request.Id)
-            .Where(i => user.Role == UserRole.Admin || i.AuthorId == user.Id)
+            .Where(i => user.Role == UserRole.Admin || i.AuthorId == user.DecodeId)
             .FirstOrDefaultAsync();
 
         if (article is null)
@@ -164,7 +164,7 @@ public class WikiService : IWikiService
     {
         var article = await _context.WikiArticles
             .Where(i => i.Id == id)
-            .Where(i => user.Role == UserRole.Admin || i.AuthorId == user.Id)
+            .Where(i => user.Role == UserRole.Admin || i.AuthorId == user.DecodeId)
             .FirstOrDefaultAsync();
 
         if (article is null)

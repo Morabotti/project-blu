@@ -20,8 +20,12 @@ public class ModelMapping : Profile
         CreateMap<CreateUserRequest, User>();
         CreateMap<CreateProjectRequest, Project>();
 
-        CreateMap<User, UserResponse>().ReverseMap();
-        CreateMap<User, AuthorResponse>().ReverseMap();
+        CreateMap<User, UserResponse>()
+            .ForMember(i => i.DecodeId, opt => opt.MapFrom(x => x.Id))
+            .AfterMap<HashIdAction<User, UserResponse>>();
+        CreateMap<UserResponse, User>().AfterMap<HashIdAction<UserResponse, User>>();
+
+        CreateMap<User, AuthorResponse>().AfterMap<HashIdAction<User, AuthorResponse>>().ReverseMap();
         CreateMap<ImageAsset, UserImageResponse>().ReverseMap();
         CreateMap<AuthorResponse, UserResponse>().ReverseMap();
         CreateMap<News, NewsResponse>().ReverseMap();

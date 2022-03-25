@@ -31,7 +31,7 @@ public class AuthController : ApiController
     public async Task<IActionResult> GetMe()
     {
         var user = GetUserClaim();
-        var response = await _authService.GetUserAsync(user.Id);
+        var response = await _authService.GetUserAsync(user.DecodeId);
 
         return HttpResponse(response);
     }

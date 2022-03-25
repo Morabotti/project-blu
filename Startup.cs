@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using HashidsNet;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using ProjectBlu.Controllers.Filters;
@@ -46,6 +47,11 @@ public class Startup
 
         services.AddHostedService<MailJobRunner>();
         services.AddHostedService<UserTokenJobRunner>();
+
+        services.AddSingleton<IHashids>(_ => new Hashids(
+            Configuration.GetValue<string>("HashId"),
+            10
+        ));
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
